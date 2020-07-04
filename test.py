@@ -21,6 +21,6 @@ X_cl.dtypes
 
 
 tree = BinaryClassificationTree(max_depth=5)
-tree.fit(X_my,y)
-pred = tree.predict(X_my)
+tree.fit(X_cl,y)
+pred = tree.predict(X_cl)
 print(pred)
