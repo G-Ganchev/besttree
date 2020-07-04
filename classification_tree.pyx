@@ -16,7 +16,6 @@ Created on Mon Jun 29 16:56:46 2020
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from pandas.api.types import is_datetime64_any_dtype
 from pandas.api.types import is_bool_dtype
 from pandas.api.types import is_categorical_dtype
