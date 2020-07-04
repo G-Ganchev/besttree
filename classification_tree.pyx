@@ -133,7 +133,7 @@ class BinaryClassificationTree:
                 best_idx = None
             if best_thr == -999:
                 best_thr = None
-
+            print(self.rev_feature_map[idx],idx,best_idx, best_thr ,best_split_type)
         return best_idx, best_thr ,best_split_type
 
     def _gini_loop(self,long[:] classes, double[:] num_left, 
@@ -164,14 +164,14 @@ class BinaryClassificationTree:
                     )
             gini = (i * gini_left + (m - i) * gini_right) / m
 
-            if thresholds[i-1] == thresholds[i - 2]:
+            if thresholds[i] == thresholds[i - 1]:
                 continue
             
             if gini < best_gini:
                 best_gini = gini
                 best_idx = idx
                 best_split_type = split_type
-                best_thr = (thresholds[i-1] + thresholds[i - 2]) / 2
+                best_thr = (thresholds[i] + thresholds[i - 1]) / 2
 
         return best_gini,best_idx,best_split_type,best_thr
 
@@ -329,7 +329,7 @@ class BinaryClassificationTreePy:
                     best_idx = idx
                     best_split_type = split_type
                     best_thr = (thresholds[i] + thresholds[i - 1]) / 2
-            
+            print(self.rev_feature_map[idx],idx,best_idx, best_thr ,best_split_type)  
         return best_idx, best_thr ,best_split_type
 
     def _grow_tree(self, X, y, depth=0):

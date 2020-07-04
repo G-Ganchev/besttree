@@ -24,3 +24,10 @@ tree = BinaryClassificationTree(max_depth=5)
 tree.fit(X_cl,y)
 pred = tree.predict(X_cl)
 print(pred)
+
+tree = BinaryClassificationTreePy(max_depth=5)
+tree.fit(X_cl,y)
+pred2 = tree.predict(X_cl)
+print(pred2)
+
+print(pd.crosstab(pd.Series(pred,name='C'),pd.Series(pred2,name='Py')))
