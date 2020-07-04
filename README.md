@@ -3,9 +3,9 @@
 # cart-tree 
 CART classification trees in python that can handle nominal and continuous data.
 
-![](.\Titanic Accuarcy.png)
+![Titanic](https://github.com/G-Ganchev/besttree/blob/master/Titanic%20Accuarcy.png)
 
-![German Credit AUC](.\German Credit AUC.png)
+![German Credit AUC](https://github.com/G-Ganchev/besttree/blob/master/German%20Credit%20AUC.png)
 
 
 
