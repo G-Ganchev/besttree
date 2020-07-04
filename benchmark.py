@@ -59,6 +59,7 @@ plt.title('TITCANIC - SKlearn CART vs Categorical Cart - CONVERGENCE')
 plt.xlabel('max_depth')
 plt.ylabel('Accurcay')
 plt.legend()
+plt.savefig('Titanic Accuarcy.png')
 plt.show()
 
 
@@ -77,6 +78,7 @@ y = german_credit['default']
 
 
 cl_perf = []
+c_py_perf = []
 sk_perf = []
 for i in range(1,20):
     print(i)
@@ -86,6 +88,12 @@ for i in range(1,20):
     pred = cl_tree.predict_proba(X_cl)
     #print('accuracy cl:' ,np.mean(pred == y))
     
+    clpy_tree = BinaryClassificationTreePy(max_depth=i)
+    clpy_tree.fit(X_cl,y)
+    predpy = clpy_tree.predict_proba(X_cl)
+    #print('accuracy cl:' ,np.mean(pred == y))
+    
+    
     clf = DecisionTreeClassifier(max_depth=i)
     clf.fit(X_sk,y)
     #pred_sk  = clf.predict(X_sk)
@@ -94,13 +102,18 @@ for i in range(1,20):
     #cl_perf.extend([np.mean(pred == y)])
     #sk_perf.extend([np.mean(pred_sk == y)])
     cl_perf.extend([roc_auc_score(y,np.array(pred)[:,1]  )])
+    c_py_perf.extend([roc_auc_score(y,np.array(predpy)[:,1]  )])
     sk_perf.extend([roc_auc_score(y, pred_sk[:,1] )])
     
     
-plt.plot(range(1,20),cl_perf,label= 'Categorical CART')
+plt.plot(range(1,20),cl_perf,label= 'Categorical CART (Cython)')
+plt.plot(range(1,20),c_py_perf,label= 'Categorical CART (Python)')
 plt.plot(range(1,20),sk_perf,label='SKlearn CART ')
 plt.title('German Credit - SKlearn CART vs Categorical Cart - CONVERGENCE')
 plt.xlabel('max_depth')
 plt.ylabel('AUC')
 plt.legend()
+plt.savefig('German Credit AUC.png')
 plt.show()
+
+
