@@ -40,7 +40,7 @@ class Node:
         self.probability = probability
 
 
-class BinaryClassificationTree:
+class BinaryClassificationTreePy:
     def __init__(self, max_depth=float("inf")):
         self.max_depth = max_depth
 
@@ -195,106 +195,3 @@ class BinaryClassificationTree:
             return np.nan
 
 
-# =============================================================================
-# from sklearn.tree import DecisionTreeClassifier
-# from sklearn.datasets import load_iris
-# 
-# dataset = load_iris()
-# X, y = dataset.data, dataset.target
-# X = X[y<2,:]
-# y = y[y<2]
-# X = X[:,0:2]
-# X = pd.DataFrame(X)
-# X['good_cat'] = pd.Series(['A' if x ==1 else 'B' for x in  y ],dtype='category')
-# #X = X[['good_cat']]
-# y = pd.Series(y)
-# y = y.map({0:'HI',1:'BABY'})
-# X 
-# 
-# tree = BinaryClassificationTree(max_depth=float('inf'))
-# tree.fit(X,y)
-# pred = tree.predict(X)
-# print('accuracy my:' ,np.mean(pred == y))
-# 
-# tree.predict_proba(X)
-# 
-# tree.tree_.node_type
-# tree.tree_.left.node_type
-# tree.tree_.right.node_type
-# 
-# 
-# titanic = pd.read_csv('titanic.txt')
-# X = titanic[['Pclass',  'Sex', 'Age', 'SibSp',
-#        'Parch', 'Fare', 'Cabin', 'Embarked']]
-# y = titanic['Survived']
-# 
-# X['Fare'] = X['Fare'].astype(float).fillna(X['Fare'].astype(float).mean())
-# X['Age'] = X['Age'].astype(float).fillna(X['Age'].astype(float).mean())
-# X = X.fillna('MISSING')
-# 
-# X_my = X.astype('category')
-# X_my['Fare'] = X_my['Fare'].astype(float)
-# X_my['Age'] = X_my['Age'].astype(float)
-# X_my.dtypes
-# 
-# 
-# X_sk = pd.get_dummies(X)
-# 
-# my_perf = []
-# sk_perf = []
-# for i in range(1,15):
-#     print(i)
-#     my_tree = BinaryClassificationTree(max_depth=i)
-#     my_tree.fit(X_my,y)
-#     pred = my_tree.predict(X_my)
-#     #print('accuracy my:' ,np.mean(pred == y))
-#     
-#     clf = DecisionTreeClassifier(max_depth=i)
-#     clf.fit(X_sk,y)
-#     pred_sk  = clf.predict(X_sk)
-#     #print('accuracy sk:' ,np.mean(pred_sk == y))
-#     my_perf.extend([np.mean(pred == y)])
-#     sk_perf.extend([np.mean(pred_sk == y)])
-#     
-# plt.plot(range(1,15),my_perf,label= 'Categorical CART')
-# plt.plot(range(1,15),sk_perf,label='SKlearn CART ')
-# plt.title('SKlearn CART vs Categorical Cart - CONVERGENCE')
-# plt.xlabel('max_depth')
-# plt.ylabel('accurcay')
-# plt.legend()
-# =============================================================================
-
-
-
-# =============================================================================
-# clf = DecisionTreeClassifier(max_depth=None,min_samples_split=2)
-# clf.fit(X,y)
-# pred_sk  = clf.predict(X)
-# 
-# 
-# 
-# print('my vs sk: ', np.mean(pred == pred_sk))
-# print('accuracy my:' ,np.mean(pred == y))
-# print('accuracy sk:' ,np.mean(pred_sk == y))
-# #pd.crosstab(np.array(pred),y.values)
-# =============================================================================
-
-
-
-# =============================================================================
-# def vc(series):
-#     unique, counts  = np.unique(series.values, return_counts=True)
-#     return  dict(zip(unique, counts))
-# 
-# %timeit vc(df['target'])
-# %timeit df['target'].value_counts()
-# 
-# 
-# %timeit np.unique(df['target'].values)
-# %timeit df['target'].unique()
-# =============================================================================
-
-#df = pd.DataFrame({'x':np.random.choice(["A",'B','C','D'],100),
-#                   'y' : np.random.choice([0,1],100)})
-#
-#df.groupby(['x']).y.mean().sort_values()

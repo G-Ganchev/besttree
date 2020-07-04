@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import roc_auc_score
+from class_tree import *
 
 titanic = pd.read_csv('titanic.txt')
 X = titanic[['Pclass',  'Sex', 'Age', 'SibSp',
@@ -29,6 +30,7 @@ X_cl.dtypes
 X_sk = pd.get_dummies(X)
 
 cl_perf = []
+c_py_perf = []
 sk_perf = []
 for i in range(1,15):
     print(i)
@@ -37,19 +39,27 @@ for i in range(1,15):
     pred = cl_tree.predict(X_cl)
     #print('accuracy cl:' ,np.mean(pred == y))
     
+    clpy_tree = BinaryClassificationTreePy(max_depth=i)
+    clpy_tree.fit(X_cl,y)
+    predpy = clpy_tree.predict(X_cl)
+    #print('accuracy cl:' ,np.mean(pred == y))
+    
     clf = DecisionTreeClassifier(max_depth=i)
     clf.fit(X_sk,y)
     pred_sk  = clf.predict(X_sk)
     #print('accuracy sk:' ,np.mean(pred_sk == y))
     cl_perf.extend([np.mean(pred == y)])
+    c_py_perf.extend([np.mean(predpy == y)])
     sk_perf.extend([np.mean(pred_sk == y)])
     
-plt.plot(range(1,15),cl_perf,label= 'Categorical CART')
+plt.plot(range(1,15),cl_perf,label= 'Categorical CART (Cython)')
+plt.plot(range(1,15),c_py_perf,label= 'Categorical CART (Python)')
 plt.plot(range(1,15),sk_perf,label='SKlearn CART ')
 plt.title('TITCANIC - SKlearn CART vs Categorical Cart - CONVERGENCE')
 plt.xlabel('max_depth')
 plt.ylabel('Accurcay')
 plt.legend()
+plt.show()
 
 
 
@@ -91,5 +101,6 @@ plt.plot(range(1,20),cl_perf,label= 'Categorical CART')
 plt.plot(range(1,20),sk_perf,label='SKlearn CART ')
 plt.title('German Credit - SKlearn CART vs Categorical Cart - CONVERGENCE')
 plt.xlabel('max_depth')
-plt.ylabel('Accurcay')
+plt.ylabel('AUC')
 plt.legend()
+plt.show()
