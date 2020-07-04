@@ -1,0 +1,64 @@
+
+os: Visual Studio 2015
+
+environment:
+
+    matrix:
+
+    - PYTHON: "C:\\Python38"
+      PYTHON_VERSION: "3.8.x" # currently 3.8.0
+      PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\\Python38-x64"
+      PYTHON_VERSION: "3.8.x" # currently 3.8.0
+      PYTHON_ARCH: "64"
+
+    - PYTHON: "C:\\Python37"
+      PYTHON_VERSION: "3.7.x" # currently 3.7.0
+      PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\\Python37-x64"
+      PYTHON_VERSION: "3.7.x" # currently 3.7.0
+      PYTHON_ARCH: "64"
+
+
+install:
+  - cmd: echo "Using cmd"
+  - ps: .\install.ps1
+  - "%PYTHON%\\python.exe --version"
+  - "%PYTHON%\\Scripts\\pip.exe --version"
+  - "%PYTHON%\\Scripts\\wheel.exe version"
+
+
+
+  # Fix MSVC builds for 64-bit Python
+  # See
+  # http://stackoverflow.com/questions/32091593/cannot-install-windows-sdk-7-1-on-windows-10
+  - echo "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64 > "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64/vcvars64.bat"
+
+  # Check that we have the expected version and architecture for Python
+  - "%PYTHON%\\python.exe  --version"
+  #- "%PYTHON%\\python.exe  -c "/import struct; print(struct.calcsize('P') * 8)"/"
+
+  - "%PYTHON%\\python.exe  -m pip install --upgrade pip setuptools"
+  # Pin wheel to 0.26 to avoid Windows ABI tag for built wheel
+  - "%PYTHON%\\Scripts\\pip.exe install wheel "  # ==0.26
+  - "%PYTHON%\\Scripts\\pip.exe install cython "  # ==0.26
+
+build_script:
+
+  - "%PYTHON%\\python.exe  setup.py build_ext --inplace"
+  - "%PYTHON%\\python.exe  setup.py bdist_wheel"
+
+
+test_script:
+
+  - "%PYTHON%\\python.exe test.py"
+
+after_test:
+  # If tests are successful, create binary packages for the project.
+  - dir dist
+
+artifacts:
+  # bdist_wheel puts your built wheel in the dist directory
+  - path: dist\*
